@@ -2,8 +2,26 @@
 
 @{
 	ViewData["Title"] = "Home";
+
+	Pager pager = new Pager();
+
+	int pageNo = 0;
+	if (ViewBag.Pager != null)
+	{
+		pager = ViewBag.Pager;
+		pageNo = pager.CurrentPage;
+	}
 }
 
+<hr />
+<form>
+	<p>
+		Search By Car Name:
+		<input type="text" name="SearchString">
+		<input type="submit" value="Search" class="btn btn-primary" />
+	</p>
+</form>
+<hr />
 
 @if (Model is not null)
 {
@@ -51,3 +69,6 @@
 	</div>
 
 }
+<div class="container py-5">
+	<partial name="_pager" model="@pager" />
+</div>

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RentalCar.Data;
-using RentalCar.GenericRepository;
 using RentalCar.Models;
 using RentalCar.ViewModel;
 
@@ -17,13 +16,13 @@ namespace RentalCar.Controllers
 	[Authorize(Roles = "User")]
 	public class RentalsController : Controller
 	{
-		private readonly IGenericRepository<Rental> _contextRental;
-		private readonly IGenericRepository<Car> _contextCar;
+		private readonly IDataHelper<Rental> _contextRental;
+		private readonly IDataHelper<Car> _contextCar;
 		private readonly UserManager<ApplicationUser> _userManager;
 
 		public RentalsController(
-			IGenericRepository<Rental> contextRental,
-			IGenericRepository<Car> contextCar,
+            IDataHelper<Rental> contextRental,
+            IDataHelper<Car> contextCar,
 			UserManager<ApplicationUser> userManager)
 		{
 			_contextRental = contextRental;
@@ -104,11 +103,6 @@ namespace RentalCar.Controllers
 		// GET: Rentals/Delete/5
 		public async Task<IActionResult> Delete(int? id)
 		{
-			if (id == null || _contextRental.GetAllAsync() == null)
-			{
-				return NotFound();
-			}
-
 			var rental = await _contextRental.GetQueryable()
 				.FirstOrDefaultAsync(m => m.Id == id);
 			if (rental == null)

@@ -2,5 +2,5 @@
 
 public enum CarType
 {
-    BMW,Mercedic
+    BMW, MercedesBenz ,HYUNDAI, Tesla, Volkswagen, Renault
 }

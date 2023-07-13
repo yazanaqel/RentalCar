@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RentalCar.Data;
-using RentalCar.GenericRepository;
 using RentalCar.Models;
+using RentalCar.Repository;
 using RentalCar.Services.EmailService;
+using RentalRental.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +21,8 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(option => option.
     .AddDefaultTokenProviders();
 
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IDataHelper<Car>, CarRepository>();
+builder.Services.AddScoped<IDataHelper<Rental>, RentalRepository>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 

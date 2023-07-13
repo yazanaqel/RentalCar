@@ -12,12 +12,12 @@ using RentalCar.Models;
 namespace RentalCar.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class CarsController : Controller
     {
-        private readonly IGenericRepository<Car> _contextCar;
+        private readonly IDataHelper<Car> _contextCar;
 
-        public CarsController(IGenericRepository<Car> contextCar)
+        public CarsController(IDataHelper<Car> contextCar)
         {
             _contextCar = contextCar;
         }
@@ -32,12 +32,8 @@ namespace RentalCar.Areas.Admin.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(Guid id)
         {
-            if (id == null || _contextCar.GetAllAsync() == null)
-            {
-                return NotFound();
-            }
-
             var car = await _contextCar.GetEntityAsync(id);
+
             if (car == null)
             {
                 return NotFound();
@@ -63,19 +59,19 @@ namespace RentalCar.Areas.Admin.Controllers
             {
                 car.Id = Guid.NewGuid();
 
-				if (Request.Form.Files.Count > 0)
-				{
-					var file = Request.Form.Files.FirstOrDefault();
+                if (Request.Form.Files.Count > 0)
+                {
+                    var file = Request.Form.Files.FirstOrDefault();
 
-					using (var stream = new MemoryStream())
-					{
-						await file.CopyToAsync(stream);
-						car.Photo = stream.ToArray();
-					}
-				}
+                    using (var stream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(stream);
+                        car.Photo = stream.ToArray();
+                    }
+                }
 
 
-				_contextCar.Insert(car);
+                _contextCar.Insert(car);
                 await _contextCar.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -85,10 +81,6 @@ namespace RentalCar.Areas.Admin.Controllers
         // GET: Admin/Cars/Edit/5
         public async Task<IActionResult> Edit(Guid id)
         {
-            if (id == null || _contextCar.GetAllAsync() == null)
-            {
-                return NotFound();
-            }
 
             var car = await _contextCar.GetEntityAsync(id);
             if (car == null)
@@ -114,7 +106,21 @@ namespace RentalCar.Areas.Admin.Controllers
             {
                 try
                 {
-                    _contextCar.Update(car);
+					if (Request.Form.Files.Count > 0)
+					{
+						var file = Request.Form.Files.FirstOrDefault();
+
+						if (file != null && file.Length > 0)
+						{
+							using (var stream = new MemoryStream())
+							{
+								await file.CopyToAsync(stream);
+								car.Photo = stream.ToArray();
+							}
+						}
+					}
+
+					_contextCar.Update(car);
                     await _contextCar.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -136,11 +142,6 @@ namespace RentalCar.Areas.Admin.Controllers
         // GET: Admin/Cars/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _contextCar.GetAllAsync() == null)
-            {
-                return NotFound();
-            }
-
             var car = await _contextCar.GetQueryable()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (car == null)
@@ -165,14 +166,14 @@ namespace RentalCar.Areas.Admin.Controllers
             {
                 _contextCar.Delete(car);
             }
-            
+
             await _contextCar.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CarExists(Guid id)
         {
-          return (_contextCar.GetQueryable()?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_contextCar.GetQueryable()?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
