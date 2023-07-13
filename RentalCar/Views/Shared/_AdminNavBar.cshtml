@@ -1,0 +1,8 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cars" asp-action="Index">Cars</a>
+    </li>
+}

@@ -1,0 +1,68 @@
+﻿@model IEnumerable<RentalCar.Models.Car>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+	<a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.EngineCapacity)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Photo)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Color)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.DailyFare)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CarType)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.EngineCapacity)
+				</td>
+				<td>
+					@if (item.Photo != null)
+					{
+						<img class="rounded-circle w-25" id="ProfilePhoto" alt="ProfilePhoto"
+							 src="data:image/*;base64,@(Convert.ToBase64String(item.Photo))" />
+					}
+					else
+					{
+						<img class="w-25" id="ProfilePhoto" alt="ProfilePhoto" src="https://th.bing.com/th/id/OIP.T9s09Pl74H7Yzy0Wdj5ZjQAAAA?pid=ImgDet&rs=1" />
+					}
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Color)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DailyFare)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CarType)
+				</td>
+				<td>
+					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

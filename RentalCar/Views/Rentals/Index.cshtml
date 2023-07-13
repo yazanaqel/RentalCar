@@ -1,0 +1,70 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@model IEnumerable<UesrRentalsViewModel>
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.IsWithDriver)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Location)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.From)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.To)
+			</th>
+			@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+			{
+				<th>
+					@Html.DisplayNameFor(model => model.UserId)
+				</th>
+			}
+			<th>
+				@Html.DisplayNameFor(model => model.CarId)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsWithDriver)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Location)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.From)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.To)
+				</td>
+				@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+				{
+					<td>
+						@Html.DisplayFor(modelItem => item.UserId)
+					</td>
+				}
+
+				<td>
+					@Html.DisplayFor(modelItem => item.CarId)
+				</td>
+				<td>
+					<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
