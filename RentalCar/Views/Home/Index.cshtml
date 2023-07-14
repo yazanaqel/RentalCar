@@ -14,16 +14,19 @@
 }
 
 <hr />
-<form>
-	<p>
-		Search By Car Name:
-		<input type="text" name="SearchString">
-		| Daily Fare Less Than:
-		<input type="number" name="filtter"> |
-		<input type="submit" value="Search" class="btn btn-primary" />
-	</p>
+<form class="form-inline">
+	<div class="form-group">
+		<label for="SearchString">Search By Car Name:</label>
+		<input type="text" name="SearchString" id="SearchString" class="form-control mx-2">
+	</div>
+	<div class="form-group">
+		<label for="filtter">Daily Fare Less Than:</label>
+		<input type="number" name="filtter" id="filtter" class="form-control mx-2">
+	</div>
+	<button type="submit" class="btn btn-primary">Go</button>
 </form>
 <hr />
+
 
 @if (Model is not null)
 {
