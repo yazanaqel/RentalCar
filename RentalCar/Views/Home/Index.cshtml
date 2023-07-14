@@ -14,16 +14,16 @@
 }
 
 <hr />
-<form class="form-inline">
-	<div class="form-group">
+<form class="form-inline card p-3" style="opacity: 0.8;">
+	<div class="form-group p-3">
 		<label for="SearchString">Search By Car Name:</label>
 		<input type="text" name="SearchString" id="SearchString" class="form-control mx-2">
 	</div>
-	<div class="form-group">
+	<div class="form-group p-3">
 		<label for="filtter">Daily Fare Less Than:</label>
 		<input type="number" name="filtter" id="filtter" class="form-control mx-2">
 	</div>
-	<button type="submit" class="btn btn-primary">Go</button>
+	<button type="submit" class="btn btn-primary p-3">Go</button>
 </form>
 <hr />
 
@@ -31,7 +31,7 @@
 @if (Model is not null)
 {
 
-	<div class="container py-5">
+	<div class="container py-5" style="opacity: 0.9;">
 		<div class="row row-cols-1 row-cols-md-3 g-4 py-5">
 
 			@foreach (var item in Model)
@@ -39,7 +39,7 @@
 
 				<div class="col">
 					<div class="card m-2">
-						<div class="card-header bg-success text-light">
+						<div class="card-header bg-primary text-light">
 							<h5 class="card-title d-flex justify-content-center align-items-center">@item.CarType</h5>
 						</div>
 						@if (item.Photo is not null)
@@ -60,7 +60,7 @@
 							<h3 class="card-text text-success">@item.DailyFare$</h3>
 						</div>
 						<div class="card-footer d-flex justify-content-around">
-							<a class="btn btn-outline-secondary" asp-controller="Rentals" asp-action="Create" asp-route-CarId="@item.Id">Rent this</a>
+							<a class="btn btn-outline-success" asp-controller="Rentals" asp-action="Create" asp-route-CarId="@item.Id">Rent this</a>
 						</div>
 						<div class="card-footer d-flex justify-content-around">
 							<a class="btn btn-outline-secondary" asp-area="Admin" asp-controller="Cars" asp-action="Details" asp-route-id="@item.Id">Details</a>
