@@ -2,62 +2,68 @@
 @model RentalCar.Models.Car
 
 @{
-    ViewData["Title"] = "Details";
+	ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<div class="d-flex justify-content-center align-items-center p-3 " style="opacity: 0.9;">
 
-<div>
-    <h4>Car Details</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EngineCapacity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EngineCapacity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Photo)
-        </dt>
-        <dd class = "col-sm-10">
-            @if (Model.Photo is not null)
-            {
-                <img style="width: 128px;" class="img-thumbnail"
-                     src="data:image/*;base64,@(Convert.ToBase64String(Model.Photo))" />
-            }
-            else
-            {
-                <img style="width: 128px;" class="img-thumbnail" src="https://th.bing.com/th/id/OIP.T9s09Pl74H7Yzy0Wdj5ZjQAAAA?pid=ImgDet&rs=1" />
-            }
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Color)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Color)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DailyFare)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DailyFare)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CarType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CarType)
-        </dd>
-    </dl>
-</div>
-<div>
-    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-        <p>|</p>
-        <a asp-action="Index">Back to List</a>
-    }
 
+	<div class="card d-flex justify-content-center align-items-center w-50 ">
+		<h1>Details</h1>
+
+		<div>
+			<h4>Car Details</h4>
+			<hr />
+			<dl class="row">
+				<dt class="col-sm-2">
+					@Html.DisplayNameFor(model => model.EngineCapacity)
+				</dt>
+				<dd class="col-sm-10">
+					@Html.DisplayFor(model => model.EngineCapacity)
+				</dd>
+				<dt class="col-sm-2">
+					@Html.DisplayNameFor(model => model.Photo)
+				</dt>
+				<dd class="col-sm-10">
+					@if (Model.Photo is not null)
+					{
+						<img style="width: 128px;" class="img-thumbnail"
+							 src="data:image/*;base64,@(Convert.ToBase64String(Model.Photo))" />
+					}
+					else
+					{
+						<img style="width: 128px;" class="img-thumbnail" src="https://th.bing.com/th/id/OIP.T9s09Pl74H7Yzy0Wdj5ZjQAAAA?pid=ImgDet&rs=1" />
+					}
+				</dd>
+				<dt class="col-sm-2">
+					@Html.DisplayNameFor(model => model.Color)
+				</dt>
+				<dd class="col-sm-10">
+					@Html.DisplayFor(model => model.Color)
+				</dd>
+				<dt class="col-sm-2">
+					@Html.DisplayNameFor(model => model.DailyFare)
+				</dt>
+				<dd class="col-sm-10">
+					@Html.DisplayFor(model => model.DailyFare)
+				</dd>
+				<dt class="col-sm-2">
+					@Html.DisplayNameFor(model => model.CarType)
+				</dt>
+				<dd class="col-sm-10">
+					@Html.DisplayFor(model => model.CarType)
+				</dd>
+			</dl>
+		</div>
+		<div>
+			@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+			{
+				<a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+				<p>|</p>
+				<a asp-action="Index">Back to List</a>
+			}
+
+		</div>
+	</div>
 </div>
 

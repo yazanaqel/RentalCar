@@ -5,19 +5,21 @@
 
 }
 
-<h1>Index</h1>
-
-<p>
-	<a asp-action="Create">Create New</a>
+<p >
+	<a class="text-light" asp-action="Create">Create New Car</a>
 </p>
-<table class="table">
+
+
+<table class="table table-hover bg-light">
+
 	<thead>
 		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.EngineCapacity)
-			</th>
+
 			<th>
 				@Html.DisplayNameFor(model => model.Photo)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.EngineCapacity)
 			</th>
 			<th>
 				@Html.DisplayNameFor(model => model.Color)
@@ -36,9 +38,6 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.EngineCapacity)
-				</td>
-				<td>
 					@if (item.Photo != null)
 					{
 						<img class="rounded-circle w-25" id="ProfilePhoto" alt="ProfilePhoto"
@@ -49,6 +48,10 @@
 						<img class="w-25" id="ProfilePhoto" alt="ProfilePhoto" src="https://th.bing.com/th/id/OIP.T9s09Pl74H7Yzy0Wdj5ZjQAAAA?pid=ImgDet&rs=1" />
 					}
 				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.EngineCapacity)
+				</td>
+				
 				<td>
 					@Html.DisplayFor(modelItem => item.Color)
 				</td>
