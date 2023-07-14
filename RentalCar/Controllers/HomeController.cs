@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentalCar.Data;
 using RentalCar.Models;
@@ -18,7 +19,8 @@ public class HomeController : Controller
         _contextCar = contextCar;
     }
 
-    public async Task<IActionResult> Index(string searchString, int page = 1)
+
+    public async Task<IActionResult> Index(string searchString, decimal filtter, int page = 1)
     {
         var model = await _contextCar.GetAllAsync();
 
@@ -30,7 +32,21 @@ public class HomeController : Controller
                 .ToList();
         }
 
-        const int pageSize = 3;
+		if (filtter > 0)
+		{
+			model = model.Where(c => c.DailyFare <= filtter).ToList();
+		}
+
+
+		var data = Paging(model, page);
+
+		return View(data);
+    }
+
+    private List<Car> Paging(List<Car> model, int page)
+    {
+		const int pageSize = 3;
+
 		if (page < 1)
 			page = 1;
 
@@ -44,8 +60,8 @@ public class HomeController : Controller
 
 		this.ViewBag.Pager = pager;
 
-		return View(data);
-    }
+        return data;
+	}
 
     public IActionResult Privacy()
     {
