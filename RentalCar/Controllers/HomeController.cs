@@ -5,6 +5,7 @@ using RentalCar.Data;
 using RentalCar.Models;
 using RentalCar.PagesNav;
 using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace RentalCar.Controllers;
 
@@ -24,30 +25,44 @@ public class HomeController : Controller
     {
         var model = await _contextCar.GetAllAsync();
 
-        if (!String.IsNullOrEmpty(searchString))
-        {
-            model = model.Where
-                (s => s.CarType.ToString().ToLower()
-                .Contains(searchString.ToLower()))
-                .ToList();
-        }
+		model = CarCompany(model, filtter);
 
-		if (dailyFare > 0)
-		{
-			model = model.Where(c => c.DailyFare <= dailyFare).ToList();
-		}
+		model = Search(model, searchString);
 
-		if (!String.IsNullOrEmpty(filtter))
-		{
-			model = model.Where(c => c.CarType.ToString().Equals(filtter)).ToList();
-		}
+		model = DailyFare(model, dailyFare);
 
 		var data = Paging(model, page);
 
 		return View(data);
     }
-
-    private List<Car> Paging(List<Car> model, int page)
+	private List<Car> Search(List<Car> model, string searchString)
+	{
+		if (!string.IsNullOrEmpty(searchString))
+		{
+			model = model.Where
+				(s => s.Color.ToLower()
+				.Equals(searchString.ToLower()))
+				.ToList();
+		}
+		return model;
+	}
+	private List<Car> DailyFare(List<Car> model, decimal dailyFare)
+	{
+		if (dailyFare > 0)
+		{
+			model = model.Where(c => c.DailyFare <= dailyFare).ToList();
+		}
+		return model;
+	}
+	private List<Car> CarCompany(List<Car> model, string filtter)
+	{
+		if (!string.IsNullOrEmpty(filtter))
+		{
+			model = model.Where(c => c.CarType.ToString().Equals(filtter)).ToList();
+		}
+		return model;
+	}
+	private List<Car> Paging(List<Car> model, int page)
     {
 		const int pageSize = 3;
 
