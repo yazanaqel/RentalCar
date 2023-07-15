@@ -20,7 +20,7 @@ public class HomeController : Controller
     }
 
 
-    public async Task<IActionResult> Index(string searchString, decimal filtter, int page = 1)
+    public async Task<IActionResult> Index(string searchString, string filtter, decimal dailyFare, int page = 1)
     {
         var model = await _contextCar.GetAllAsync();
 
@@ -32,11 +32,15 @@ public class HomeController : Controller
                 .ToList();
         }
 
-		if (filtter > 0)
+		if (dailyFare > 0)
 		{
-			model = model.Where(c => c.DailyFare <= filtter).ToList();
+			model = model.Where(c => c.DailyFare <= dailyFare).ToList();
 		}
 
+		if (!String.IsNullOrEmpty(filtter))
+		{
+			model = model.Where(c => c.CarType.ToString().Equals(filtter)).ToList();
+		}
 
 		var data = Paging(model, page);
 
