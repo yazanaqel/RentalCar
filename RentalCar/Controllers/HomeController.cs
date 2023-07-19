@@ -12,53 +12,23 @@ namespace RentalCar.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+	private readonly ILogger<HomeController> _logger;
 	private readonly IDataHelper<Car> _contextCar;
 	private readonly IMemoryCache _cache;
 
 	public HomeController(ILogger<HomeController> logger, IDataHelper<Car> contextCar, IMemoryCache cache)
-    {
-        _logger = logger;
-        _contextCar = contextCar;
+	{
+		_logger = logger;
+		_contextCar = contextCar;
 		_cache = cache;
 	}
 
-	private async Task<List<Car>> GetCarsFromCacheAsync()
+
+
+
+	public async Task<IActionResult> Index(string searchString, string filtter, decimal dailyFare, int page = 1)
 	{
-		// Define a cache key
-		var cacheKey = "Cars";
-
-		// Try to get the list of cars from the cache
-		if (!_cache.TryGetValue(cacheKey, out List<Car> cars))
-		{
-			// If not found in the cache, get the list of cars from the database
-			cars = await _contextCar.GetAllAsync();
-
-			// Define cache options
-			var cacheOptions = new MemoryCacheEntryOptions()
-			{
-				// Set absolute expiration to 10 minutes
-				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
-
-				// Set priority to high
-				Priority = CacheItemPriority.High,
-
-				// Set size to 1 (optional)
-				Size = 1
-			};
-
-			// Set the list of cars in the cache with the cache options
-			_cache.Set(cacheKey, cars, cacheOptions);
-		}
-
-		// Return the list of cars to the view
-		return cars;
-	}
-
-
-public async Task<IActionResult> Index(string searchString, string filtter, decimal dailyFare, int page = 1)
-    {
-        var model = await GetCarsFromCacheAsync();
+		var model = await GetCarsFromCacheAsync();
 
 		model = CarCompany(model, filtter);
 
@@ -69,7 +39,31 @@ public async Task<IActionResult> Index(string searchString, string filtter, deci
 		var finalData = Paging(model, page);
 
 		return View(finalData);
-    }
+	}
+
+	private async Task<List<Car>> GetCarsFromCacheAsync()
+	{
+		var cacheKey = "Cars";
+
+		if (!_cache.TryGetValue(cacheKey, out List<Car> cars))
+		{
+			cars = await _contextCar.GetAllAsync();
+
+			var cacheOptions = new MemoryCacheEntryOptions()
+			{
+				AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10),
+
+				Priority = CacheItemPriority.High,
+
+				Size = 1
+			};
+
+			_cache.Set(cacheKey, cars, cacheOptions);
+		}
+
+		return cars;
+	}
+
 	private List<Car> Search(List<Car> model, string searchString)
 	{
 		if (!string.IsNullOrEmpty(searchString))
@@ -98,7 +92,7 @@ public async Task<IActionResult> Index(string searchString, string filtter, deci
 		return model;
 	}
 	private List<Car> Paging(List<Car> model, int page)
-    {
+	{
 		const int pageSize = 3;
 
 		if (page < 1)
@@ -114,17 +108,17 @@ public async Task<IActionResult> Index(string searchString, string filtter, deci
 
 		this.ViewBag.Pager = pager;
 
-        return data;
+		return data;
 	}
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+	public IActionResult Privacy()
+	{
+		return View();
+	}
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+	[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+	public IActionResult Error()
+	{
+		return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+	}
 }
