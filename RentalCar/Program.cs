@@ -26,6 +26,7 @@ builder.Services.AddScoped<IDataHelper<Rental>, RentalRepository>();
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
